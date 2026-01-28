@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Galaxy Cookie Clicker</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: radial-gradient(circle at top, #1b0033, #000);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .game {
+        display: flex;
+        gap: 30px;
+        background: rgba(0,0,0,0.6);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 0 40px rgba(150,0,255,0.6);
+    }
+
+    .left {
+        text-align: center;
+    }
+
+    .cookie {
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle at top, #ffccff, #9933ff);
+        box-shadow: 0 0 30px #cc66ff;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+
+    .cookie:active {
+        transform: scale(0.95);
+    }
+
+    .count {
+        margin-top: 15px;
+        font-size: 22px;
+    }
+
+    .right {
+        width: 300px;
+    }
+
+    h2 {
+        margin-top: 0;
+        text-align: center;
+        color: #ff99ff;
+    }
+
+    .upgrade {
+        background: rgba(50,0,80,0.8);
+        border: 1px solid #aa66ff;
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .upgrade:hover {
+        background: rgba(80,0,130,0.9);
+    }
+
+    .upgrade span {
+        display: block;
+        font-size: 14px;
+        color: #ddd;
+    }
+</style>
+</head>
+<body>
+
+<div class="game">
+    <div class="left">
+        <div class="cookie" onclick="clickCookie()"></div>
+        <div class="count">
+            🍪 Cosmic Cookies: <span id="cookies">0</span>
+        </div>
+        <div>
+            ⚡ Cookies per second: <span id="cps">0</span>
+        </div>
+    </div>
+
+    <div class="right">
+        <h2>🚀 Galactic Upgrades</h2>
+
+        <div class="upgrade" onclick="buyClickPower()">
+            <strong>✨ Quantum Click Power</strong>
+            <span>+1 cookie per click</span>
+            <span>Cost: <span id="clickCost">50</span></span>
+        </div>
+
+        <div class="upgrade" onclick="buyAutoClicker()">
+            <strong>🛰 Auto-Click Drone</strong>
+            <span>+1 cookie / second</span>
+            <span>Owned: <span id="autoCount">0</span></span>
+            <span>Cost: <span id="autoCost">100</span></span>
+        </div>
+
+        <div class="upgrade" onclick="buyFactory()">
+            <strong>🌌 Stellar Factory</strong>
+            <span>+5 cookies / second</span>
+            <span>Owned: <span id="factoryCount">0</span></span>
+            <span>Cost: <span id="factoryCost">500</span></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    let cookies = 0;
+
+    let clickPower = 1;
+    let clickCost = 50;
+
+    let autoClickers = 0;
+    let autoCost = 100;
+
+    let factories = 0;
+    let factoryCost = 500;
+
+    function updateUI() {
+        document.getElementById("cookies").innerText = Math.floor(cookies);
+        document.getElementById("clickCost").innerText = clickCost;
+        document.getElementById("autoCost").innerText = autoCost;
+        document.getElementById("factoryCost").innerText = factoryCost;
+        document.getElementById("autoCount").innerText = autoClickers;
+        document.getElementById("factoryCount").innerText = factories;
+        document.getElementById("cps").innerText = (autoClickers + factories * 5);
+    }
+
+    function clickCookie() {
+        cookies += clickPower;
+        updateUI();
+    }
+
+    function buyClickPower() {
+        if (cookies >= clickCost) {
+            cookies -= clickCost;
+            clickPower++;
+            clickCost = Math.floor(clickCost * 1.5);
+            updateUI();
+        }
+    }
+
+    function buyAutoClicker() {
+        if (cookies >= autoCost) {
+            cookies -= autoCost;
+            autoClickers++;
+            autoCost = Math.floor(autoCost * 1.6);
+            updateUI();
+        }
+    }
+
+    function buyFactory() {
+        if (cookies >= factoryCost) {
+            cookies -= factoryCost;
+            factories++;
+            factoryCost = Math.floor(factoryCost * 1.8);
+            updateUI();
+        }
+    }
+
+    setInterval(() => {
+        cookies += autoClickers;
+        cookies += factories * 5;
+        updateUI();
+    }, 1000);
+
+    updateUI();
+</script>
+
+</body>
+</html>
